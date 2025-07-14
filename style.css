@@ -1,0 +1,461 @@
+/* Basic Resets and Defaults */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* CSS Variables for Consistent Theming */
+:root {
+  --color-bg: #69F7BE;
+  --color-text-main: #333333;
+  --color-text-header: #2800FF;
+  --color-primary: #FFFF00;
+  --color-secondary: #4a90e2;
+  --wrapper-height: 87vh;
+  --image-max-width: 300px;
+  --image-margin: 3rem;
+  --font-family: "HK Grotesk", Arial, sans-serif;
+}
+
+/* Import Fonts */
+@font-face {
+  font-family: "HK Grotesk";
+  src: url("https://cdn.glitch.me/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Regular.otf?v=1603136326027") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HK Grotesk";
+  src: url("https://cdn.glitch.me/605e2a51-d45f-4d87-a285-9410ad350515%2FHKGrotesk-Bold.otf?v=1603136323437") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* General Styling */
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2, h3, h4 {
+  color: var(--color-text-header);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.5em;
+  letter-spacing: 1px;
+}
+
+div {
+  margin-bottom: 30px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Elements */
+select, input[type="date"], input[type="time"], input[type="number"], button {
+  font-family: var(--font-family);
+  font-size: 1rem;
+  background: #ffffff;
+  border: 1px solid #000000;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  transition: all 300ms ease;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1rem;
+  padding-right: 2rem;
+}
+
+button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+select:hover, input:hover, button:hover {
+  background-color: #f0f0f0;
+}
+
+button:active {
+  transform: translateY(3px);
+}
+
+label {
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+/* Auth Section */
+#auth-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#user-info {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+#login-button, #logout-button {
+  padding: 8px 16px;
+  margin: 5px;
+}
+
+/* Week Forecast Table */
+#week-forecast {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9em;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#week-forecast tr td[colspan] {
+  text-align: center;
+  padding: 10px;
+  font-style: italic;
+  color: #666666;
+}
+
+/* Day Headers (First Row) */
+#week-forecast thead tr:first-child th:not(:first-child) {
+  background-color: var(--color-secondary);
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.1em;
+  padding: 10px;
+  border-right: 2px solid #ffffff;
+  text-align: center;
+}
+
+#week-forecast thead tr:first-child th:last-child {
+  border-right: none;
+}
+
+/* Time Slot Headers (Second Row) */
+#week-forecast thead tr:nth-child(2) th:not(:first-child) {
+  background-color: #e0e0e0;
+  color: #333333;
+  font-weight: normal;
+  font-size: 0.9em;
+  padding: 5px;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  text-align: center;
+}
+
+#week-forecast thead tr:nth-child(2) th:nth-child(16n+2) {
+  border-right: 2px solid #ffffff;
+}
+
+/* Metric Labels (First Column) */
+#week-forecast tbody td:first-child {
+  font-weight: bold;
+  background-color: #f5f5f5;
+  padding: 8px;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  text-align: left;
+}
+
+/* Data Cells */
+#week-forecast tbody td:not(:first-child) {
+  padding: 8px;
+  border-right: 1px solid #cccccc;
+  border-bottom: 1px solid #cccccc;
+  text-align: center;
+}
+
+/* Separator between days */
+#week-forecast tbody td:nth-child(16n+2) {
+  border-right: 2px solid var(--color-secondary);
+}
+
+/* Tide Height Row */
+#week-forecast tbody tr:nth-last-child(2) td:not(:first-child) {
+  background-color: #e6f3ff;
+  font-size: 0.85em;
+}
+
+/* Tide Times Row (last row) */
+#week-forecast tbody tr:last-child td:not(:first-child) {
+  background-color: #e6f3ff;
+  font-size: 0.85em;
+  white-space: normal;
+  line-height: 1.4;
+}
+
+/* Alternating Row Colors for Readability */
+#week-forecast tbody tr:nth-child(odd) td {
+  background-color: #fafafa;
+}
+
+/* Hover Effect for Data Cells */
+#week-forecast tbody td:hover:not(:first-child) {
+  background-color: #f0f0f0;
+}
+
+/* Rating Section */
+#last-session-time, #last-num-waves, #last-ride-length, #last-consistency, 
+#last-session-score, #last-wind-direction, #last-wind-strength,
+#rating-swell-height, #rating-swell-period, #rating-swell-direction,
+#rating-wind-speed, #rating-wind-direction-data {
+  font-weight: bold;
+  color: var(--color-text-main);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.8em;
+  }
+
+  div {
+    padding: 15px;
+  }
+
+  #week-forecast {
+    font-size: 0.8em;
+  }
+
+  #week-forecast thead tr:first-child th {
+    font-size: 1em;
+    padding: 8px;
+  }
+
+  #week-forecast thead tr:nth-child(2) th {
+    font-size: 0.8em;
+    padding: 4px;
+  }
+
+  #week-forecast tbody td {
+    padding: 6px;
+  }
+
+  #week-forecast tbody tr:last-child td {
+    font-size: 0.75em;
+  }
+
+  select, input, button {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  select, input, button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+/* Highlight the forecast section at the top */
+.section:first-of-type {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the log session form for better visibility */
+#log-session-section {
+  background-color: #e6f3ff;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 20px 0;
+}
+
+/* Style the session history section */
+#session-history-section {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+/* Ensure tables are scrollable if they’re too wide */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+  overflow-x: auto; /* Allow horizontal scrolling on small screens */
+  display: block;
+}
+
+/* Style the loading message */
+#week-forecast td[colspan="113"] {
+  font-style: italic;
+  color: #666666;
+  text-align: center;
+  padding: 20px;
+}
+/* Style form rows to display fields side by side */
+.form-row {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  gap: 15px; /* Space between fields */
+  align-items: center; /* Vertically align fields */
+}
+
+/* Ensure form fields within rows don’t grow too wide */
+.form-row > div {
+  flex: 1; /* Allow fields to grow equally */
+  min-width: 200px; /* Prevent fields from becoming too narrow */
+}
+
+/* Adjust the submit button to align with the form layout */
+#log-session-form button[type="submit"] {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+#log-session-form button[type="submit"]:hover {
+  background-color: #45a049;
+}
+<style>
+  /* Basic styling to make the form and table look better */
+  .section {
+    margin: 20px 0;
+  }
+  label {
+    margin-right: 10px;
+  }
+  input, select, button {
+    margin: 5px;
+    padding: 5px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    overflow-x: auto;
+    display: block;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  /* Highlight the forecast section at the top */
+  .section:first-of-type {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  /* Style the log session form for better visibility */
+  #log-session-section {
+    background-color: #e6f3ff;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+  }
+  /* Style the session history section */
+  #session-history-section {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  /* Style the loading message */
+  #week-forecast td[colspan="113"] {
+    font-style: italic;
+    color: #666;
+    text-align: center;
+    padding: 20px;
+  }
+  /* Style the authentication section */
+  #auth-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  /* Style the buttons to be more compact */
+  #login-btn, #logout-btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  /* Style the auth status text */
+  #auth-status {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+  }
+  /* Style form rows to display fields side by side */
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+  }
+  /* Ensure form fields within rows don’t grow too wide */
+  .form-row > div {
+    flex: 1;
+    min-width: 200px;
+  }
+  /* Adjust the submit button to align with the form layout */
+  #log-session-form button[type="submit"] {
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  #log-session-form button[type="submit"]:hover {
+    background-color: #45a049;
+  }
+</style>

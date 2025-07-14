@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surf Spotter - Log and Predict</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .section { margin: 20px 0; }
+    label { margin-right: 10px; }
+    input, select, button { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 10px; overflow-x: auto; display: block; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    .section:first-of-type { background-color: #f9f9f9; padding: 15px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+    #log-session-section { background-color: #e6f3ff; padding: 15px; border-radius: 5px; margin: 20px 0; }
+    #session-history-section { background-color: #f0f0f0; padding: 15px; border-radius: 5px; }
+    #week-forecast td[colspan="113"] { font-style: italic; color: #666; text-align: center; padding: 20px; }
+    #auth-container { position: absolute; top: 10px; right: 10px; display: flex; align-items: center; gap: 10px; }
+    #login-btn, #logout-btn { padding: 5px 10px; font-size: 14px; border-radius: 3px; border: 1px solid #ccc; background-color: #f0f0f0; cursor: pointer; }
+    #auth-status { margin: 0; font-size: 14px; color: #666; }
+    .form-row { display: flex; flex-wrap: wrap; gap: 15px; align-items: center; }
+    .form-row > div { flex: 1; min-width: 200px; }
+    #beach-break-section { flex: 0 1 auto; min-width: 150px; }
+    #log-session-form button[type="submit"] { margin-top: 10px; padding: 8px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 3px; cursor: pointer; }
+    #log-session-form button[type="submit"]:hover { background-color: #45a049; }
+  </style>
+</head>
+<body>
+  <h1>Surf Spotter</h1>
+
+  <!-- Authentication Section -->
+  <div id="auth-container">
+    <button id="login-btn" style="display: none;">Sign In with Google</button>
+    <button id="logout-btn" style="display: none;">Sign Out</button>
+    <p id="auth-status">Checking authentication status...</p>
+  </div>
+
+<!-- Week-Ahead Forecast -->
+<div class="section">
+  <h2>Week-Ahead Forecast</h2>
+  <div>
+    <label for="forecast-spot">Select Surf Spot for Forecast:</label>
+    <select id="forecast-spot">
+      <option value="">Select a spot</option>
+    </select>
+    <label for="show-historical-match" style="margin-left: 20px;">
+      <input type="checkbox" id="show-historical-match" checked> Show Historical Match %
+    </label>
+  </div>
+  <table id="week-forecast">
+    <thead>
+      <tr>
+        <th>Metric</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+  <!-- Log a Session Form -->
+  <div id="log-session-section" class="section" style="display: none;">
+    <h2>Log a Surf Session</h2>
+    <form id="log-session-form">
+      <div class="form-row" id="spot-type-row">
+        <div id="predefined-spot-section">
+          <label for="session-spot">Spot:</label>
+          <select id="session-spot">
+            <option value="">Select a spot</option>
+            <option value="onrus">Onrus</option>
+            <option value="stilbaai">Stilbaai</option>
+            <option value="jeffreys bay">Jeffreys Bay</option>
+            <option value="muizenberg">Muizenberg</option>
+            <option value="add-new-spot">Add New Spot</option>
+          </select>
+        </div>
+        <div id="beach-break-section">
+          <label for="session-is-beach-break">Beach Break?</label>
+          <input type="checkbox" id="session-is-beach-break" name="session-is-beach-break">
+        </div>
+      </div>
+
+      <div id="custom-spot-section" style="display: none;">
+        <div class="form-row" id="custom-spot-row">
+          <div>
+            <label for="custom-spot-name">Custom Spot Name:</label>
+            <input type="text" id="custom-spot-name" name="custom-spot-name" placeholder="Enter spot name">
+          </div>
+          <div>
+            <label for="custom-spot-data-source">Data Source:</label>
+            <select id="custom-spot-data-source" name="custom-spot-data-source">
+              <option value="manual">Enter Coordinates Manually</option>
+              <option value="predefined">Use Predefined Spot Data</option>
+            </select>
+          </div>
+        </div>
+        <div id="custom-spot-predefined-section" style="display: none;">
+          <label for="custom-spot-predefined">Select Predefined Spot:</label>
+          <select id="custom-spot-predefined">
+            <option value="onrus">Onrus</option>
+            <option value="stilbaai">Stilbaai</option>
+            <option value="jeffreys bay">Jeffreys Bay</option>
+            <option value="muizenberg">Muizenberg</option>
+          </select>
+        </div>
+        <div id="custom-spot-coordinates-section" class="form-row" style="display: none;">
+          <div>
+            <label for="custom-spot-lat">Latitude:</label>
+            <input type="number" id="custom-spot-lat" name="custom-spot-lat" step="any" placeholder="e.g., -34.4187">
+          </div>
+          <div>
+            <label for="custom-spot-lng">Longitude:</label>
+            <input type="number" id="custom-spot-lng" name="custom-spot-lng" step="any" placeholder="e.g., 19.2345">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div>
+          <label for="session-date">Session Date and Time:</label>
+          <input type="datetime-local" id="session-date" name="session-date" required>
+        </div>
+        <div>
+          <label for="session-score">Score (1-10):</label>
+          <input type="number" id="session-score" name="session-score" min="1" max="10" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="session-comments">Comments:</label>
+          <textarea id="session-comments" name="session-comments" rows="3" placeholder="Add any notes about this session - lefts or rights, choppy/glassy?"></textarea>
+        </div>
+      </div>
+      <button type="submit">Log Session</button>
+    </form>
+  </div>
+
+  <!-- Session History -->
+  <div id="session-history-section" class="section" style="display: none;">
+    <h2>Session History</h2>
+    <table id="session-history-table">
+      <thead>
+        <tr>
+          <th>Date & Time</th>
+          <th>Spot</th>
+          <th>Score</th>
+          <th>Swell Height (m)</th>
+          <th>Swell Period (s)</th>
+          <th>Swell Direction (°)</th>
+          <th>Wind Speed (knots)</th>
+          <th>Wind Direction (°)</th>
+          <th>Tide Height (m)</th>
+          <th>Tide Movement</th>
+          <th>Beach Break</th>
+          <th>Comments</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.6.0/firebase-auth-compat.js"></script>
+
+  <!-- Firebase Initialization -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCqw3BL4Dl8LKyFNLnw3drSTjqz6RlVGWc",
+      authDomain: "predictor-4357d.firebaseapp.com",
+      projectId: "predictor-4357d",
+      storageBucket: "predictor-4357d.firebasestorage.app",
+      messagingSenderId: "595892473962",
+      appId: "1:595892473962:web:5c9af499e8478a7856ba13",
+      measurementId: "G-HGKR61TBXL"
+    };
+    firebase.initializeApp(firebaseConfig, { experimentalForceLongPolling: true });
+  </script>
+
+  <!-- Load script.js -->
+  <script src="script.js"></script>
+</body>
+</html>
